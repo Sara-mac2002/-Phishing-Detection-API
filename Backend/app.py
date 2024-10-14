@@ -191,8 +191,27 @@ x_train, x_test, y_train, y_test = train_test_split(feature_std, labels, test_si
 imputer = SimpleImputer(strategy="mean")
 x_train_imputed = imputer.fit_transform(x_train)
 x_test_imputed = imputer.transform(x_test)
+# random forest classifier 
 clf_rf = RandomForestClassifier()
 clf_rf.fit(x_train, y_train)
+# Logistic Regression Model
+clf_logreg = LogisticRegression(random_state=0)
+clf_logreg.fit(x_train_imputed, y_train)
+y_pred_logreg = clf_logreg.predict(x_test_imputed)
+# Function to print evaluation metrics (accuracy, precision, recall, etc.)
+print_stats_metrics(y_test, y_pred_logreg)
+# Decision Tree Regressor (Not ideal for classification but just an example)
+clfDT = DecisionTreeRegressor()
+clfDT.fit(x_train, y_train)
+y_pred_tree = clfDT.predict(x_test)
+# Evaluate Decision Tree predictions
+print_stats_metrics(y_test, y_pred_tree)
+# Support Vector Machine (SVM) Classifier
+clf_svm = svm.SVC()
+clf_svm.fit(x_train_imputed, y_train)
+y_pred_svm = clf_svm.predict(x_test_imputed)
+# Evaluate SVM predictions
+print_stats_metrics(y_test, y_pred_svm)
 
 @app.route('/predict', methods=['POST'])
 def predict():
